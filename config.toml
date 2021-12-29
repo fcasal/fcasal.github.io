@@ -1,4 +1,4 @@
-baseURL = 'fcasal.github.io'
+baseURL = 'https://fcasal.github.io'
 languageCode = 'en-us'
 title = 'Filipe Casal'
 theme = "researcher"
