@@ -25,10 +25,6 @@ theme = "researcher"
     icon = "fab fa-twitter"
     title = "Twitter"
     url = "https://twitter.com/filipe_casal"
-#   [[params.socialIcons]]
-#     icon = "fas fa-envelope"
-#     title = "E-mail"
-#     url = "mailto:mail@example.com"
 
 [permalinks]
   "/" = "/:filename"
@@ -43,6 +39,15 @@ theme = "researcher"
     name = "Writeups & Code Snippets"
     url = "/writeups"
     weight = 3
+
+
+
+
+
+#   [[params.socialIcons]]
+#     icon = "fas fa-envelope"
+#     title = "E-mail"
+#     url = "mailto:mail@example.com"
   # [[menu.main]]
   #   name = "Resume"
   #   url = "/contact"
