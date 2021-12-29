@@ -1,0 +1,5 @@
+<ul>
+{{range $details := sort .Site.Data.references "year" "desc"}}
+        <li>{{if $details.tag}}[{{$details.tag}}]{{end}} {{$details.authors}}. <a href="{{$details.url}}" title="{{$details.title}}" target="_blank">{{$details.title}}</a> {{$details.venue}} ({{$details.year}})</li>
+        {{end}}
+</ul>
