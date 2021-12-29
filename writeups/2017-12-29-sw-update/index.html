@@ -1,0 +1,125 @@
+<!doctype html><html lang><head>
+<meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no">
+<title>Software-update</title>
+<meta name=description content>
+<meta name=author content="Filipe Casal">
+<link href="https://fonts.googleapis.com/css2?family=Inconsolata:wght@400;700&display=swap" rel=stylesheet>
+<link rel=stylesheet href=https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css integrity=sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2 crossorigin=anonymous>
+<link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin=anonymous>
+<link rel=stylesheet href=/fcasal.github.io/sass/researcher.min.css>
+<link rel=icon type=image/ico href=fcasal.github.io/favicon.ico>
+</head>
+<link rel=stylesheet href=https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css integrity=sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3+Aro6EYUG4+cU+KJWu/X crossorigin=anonymous>
+<script defer src=https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.js integrity=sha384-g7c+Jr9ZivxKLnZTDUhnkOnsh30B4H0rpLUpJ4jAIKs4fnJI+sEnkvrMWph2EDg4 crossorigin=anonymous></script>
+<script defer src=https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/contrib/auto-render.min.js integrity=sha384-mll67QQFJfxn0IYznZYonOWZ644AWYC+Pt2cHqMaRhXVrursRwvLnLaebdGIlYNa crossorigin=anonymous onload=renderMathInElement(document.body)></script>
+<script>document.addEventListener("DOMContentLoaded",function(){renderMathInElement(document.body,{delimiters:[{left:"$$",right:"$$",display:!0},{left:"\\[",right:"\\]",display:!0},{left:"$",right:"$",display:!1},{left:"\\(",right:"\\)",display:!1}]})})</script>
+<body><div class="container mt-5">
+<nav class="navbar navbar-expand-sm flex-column flex-sm-row text-nowrap p-0">
+<a class="navbar-brand mx-0 mr-sm-auto" href=fcasal.github.io title="Filipe Casal">
+Filipe Casal
+</a>
+<div class="navbar-nav flex-row flex-wrap justify-content-center">
+<a class="nav-item nav-link" href=fcasal.github.io/ title=About>
+About
+</a>
+<span class="nav-item navbar-text mx-1">/</span>
+<a class="nav-item nav-link" href=fcasal.github.io/writeups title="Writeups & Code Snippets">
+Writeups & Code Snippets
+</a>
+</div>
+</nav>
+</div>
+<hr>
+<div id=content>
+<div class=container>
+<h1 id=software-update>Software-update</h1>
+<p><strong>by mandlebro, l0rdc0mm4nd3r, majo and jofra</strong></p>
+<h2 id=general-description>General description</h2>
+<p>This challenge has a service that accepts a zip file and if the signature inside is a valid RSA PSS signature of the Xor of the hash of the files and folders inside, it runs two python scripts.</p>
+<h2 id=tldr>TLDR:</h2>
+<ul>
+<li>since we can include an arbitrary number of files, we can find a set of 256 <code>sha256</code> hashes which are a basis for $\mathbb{Z}_2^{256}$).</li>
+<li>change the python files in a way that it runs system and prints the flag.</li>
+<li>compute the hash of the new zip, $h_{new}$, and find which set of files $I$ of the basis to include in order that $h_{new} \oplus \bigoplus_{i\in I} \mathsf{sha256}(i) = h_{orig}$. This will pass the check for validity and get your flag.</li>
+</ul>
+<h2 id=too-short-pls-explain>Too short, pls explain</h2>
+<p>The code is not that short and some potential attack vectors were explored:</p>
+<ol>
+<li>when computing the hash of the file tree, the code is (basically)</li>
+</ol>
+<div class=highlight><pre tabindex=0 style=background-color:#f0f0f0;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=color:#007020;font-weight:700>for</span> f <span style=color:#007020;font-weight:700>in</span> files:
+    <span style=color:#007020;font-weight:700>if</span> os<span style=color:#666>.</span>path<span style=color:#666>.</span>isfile(f):
+        h <span style=color:#666>=</span> <span style=color:#666>...</span><span style=color:#60a0b0;font-style:italic># compute hash</span>
+    <span style=color:#007020;font-weight:700>elif</span> os<span style=color:#666>.</span>path<span style=color:#666>.</span>isdir(f):
+        h <span style=color:#666>=</span> <span style=color:#666>...</span><span style=color:#60a0b0;font-style:italic># compute hash</span>
+    <span style=color:#007020;font-weight:700>else</span>:
+        <span style=color:#007020;font-weight:700>pass</span>
+    result <span style=color:#666>=</span> xor(result, h)
+</code></pre></div><p>so, if we could find a type of file that would not be a file or a dir (in the eyes of <code>os.path</code>) we would go through the pass option of the <code>if</code>, and so we would perform the xor with a previous <code>h</code>, thus effectively removing it. We spent some time on this but without success.</p>
+<ol start=2>
+<li>
+<p>hidden files were ignored in the hash computation (not even listed in the previous filename list so we could not use the pass vulnerability), however we could not exploit this in any way as well.</p>
+</li>
+<li>
+<p>finally, we noticed that we can have full control of the computed hash since we can upload any number of files (as long as we dont exceed some size). Thus, we can potentially find a set of hashes whose <code>xor</code> combinations generate all other hashes.</p>
+</li>
+</ol>
+<h2 id=the-attack>The attack</h2>
+<p>We now need to find this set of 256 hashes that generate all other hashes through their combination. This can be described by finding a basis for the matrix space of size 256 over $\mathbb{Z}_2$. We run the following until we obtain a basis of size 256:</p>
+<ul>
+<li>randomly generate a hash</li>
+<li>add it to the basis</li>
+<li>if the dimension of the new basis increases, add it, else discard it.</li>
+</ul>
+<p>This can easily be performed in <code>sage</code>:</p>
+<div class=highlight><pre tabindex=0 style=background-color:#f0f0f0;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=color:#007020;font-weight:700>def</span> <span style=color:#06287e>genbasis</span>():
+    V <span style=color:#666>=</span> VectorSpace(GF(<span style=color:#40a070>2</span>), <span style=color:#40a070>256</span>)
+    fn, b <span style=color:#666>=</span> genrandhash()
+    fnames <span style=color:#666>=</span> [fn]
+    basis <span style=color:#666>=</span> [b]
+    S <span style=color:#666>=</span> V<span style=color:#666>.</span>subspace(basis)
+    dim <span style=color:#666>=</span> S<span style=color:#666>.</span>dimension()
+    <span style=color:#007020;font-weight:700>while</span> dim <span style=color:#666>!=</span> <span style=color:#40a070>256</span>:
+        fn, b <span style=color:#666>=</span> genrandhash()
+        new <span style=color:#666>=</span> V<span style=color:#666>.</span>subspace(basis<span style=color:#666>+</span>[b])
+        dim_new <span style=color:#666>=</span> new<span style=color:#666>.</span>dimension()
+        <span style=color:#007020;font-weight:700>if</span> dim <span style=color:#666>&lt;</span> dim_new:
+            <span style=color:#60a0b0;font-style:italic># we got a useful vector, lets add it</span>
+            fnames <span style=color:#666>+=</span> [fn]
+            basis <span style=color:#666>+=</span> [b]
+            dim <span style=color:#666>=</span> dim_new
+    <span style=color:#007020;font-weight:700>return</span> fnames, basis
+</code></pre></div><p>We now have our basis $B$ for the full hash space, and so, if we want to generate a set of files that hash to $h$ we only need to find the combination of elements of the basis that <code>xor</code> to $h$:
+$$B\cdot x = h$$
+We now only need to invert $B$ and obtain $x$:
+$$x=B^{-1} h$$
+With this we obtain a way to find a set of hashes that hash to any value we want.</p>
+<p>Now, we need to:</p>
+<ul>
+<li>change our the loaded <code>pre-copy.py</code> script, for instance as:</li>
+</ul>
+<div class=highlight><pre tabindex=0 style=background-color:#f0f0f0;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=color:#007020;font-weight:700>import</span> <span style=color:#0e84b5;font-weight:700>os</span>
+<span style=color:#007020>print</span>(os<span style=color:#666>.</span>system(<span style=color:#4070a0>&#39;find / -iname flag&#39;</span>))
+<span style=color:#007020>print</span>(os<span style=color:#666>.</span>system(<span style=color:#4070a0>&#39;cat *&#39;</span>))
+<span style=color:#007020>print</span>(os<span style=color:#666>.</span>system(<span style=color:#4070a0>&#39;grep -r &#34;34C3_&#34;&#39;</span>))
+<span style=color:#007020>print</span>(os<span style=color:#666>.</span>system(<span style=color:#4070a0>&#39;cat /flag&#39;</span>))
+<span style=color:#007020>print</span>(<span style=color:#4070a0>&#39;STT is are nice&#39;</span>)
+</code></pre></div><ul>
+<li>compute the new hash of the zip tree, $h_{new}$</li>
+<li>find the set of files $I$ such that $$h_{real} = h_{new} \oplus \bigoplus_{i\in I} sha256(i)$$</li>
+<li>submit the new zipped file and get the flag!</li>
+</ul>
+<p>gg ESPR</p>
+</div>
+</div><div id=footer class=mb-5>
+<hr>
+<div class="container text-center">
+<a href=https://twitter.com/filipe_casal class="fab fa-twitter fa-1x" title=Twitter></a>
+</div>
+<div class="container text-center">
+<a href=https://github.com/fcasal title="By Filipe Casal"><small>By Filipe Casal</small></a>
+</div>
+</div>
+</body>
+</html>
