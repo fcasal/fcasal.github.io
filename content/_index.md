@@ -19,7 +19,6 @@ I interested in cryptography, vulnerability research, logic, automated reasoning
 I have played CTF's since 2014 with [STT](https://sectt.github.io/).
 
 
-
 ## Vulnerability Research
  - I participated in the [EU-FOSSA](https://joinup.ec.europa.eu/collection/eu-fossa-2) program and audited the ssh PuTTY source code for one month. The highest severity vulnerabilities were:
      - **DSA signature bypass allows to MITM SSH sessions**: More details [here](https://www.chiark.greenend.org.uk/~sgtatham/putty/wishlist/vuln-dss-verify.html).
