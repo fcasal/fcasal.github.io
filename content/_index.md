@@ -25,6 +25,8 @@ I have played CTF's since 2014 with [STT](https://sectt.github.io/).
      - [CVE-2019-9894](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2019-9894): Integer overflow to OOB write during RSA key exchange. More details [here](https://www.chiark.greenend.org.uk/~sgtatham/putty/wishlist/vuln-rsa-kex-integer-overflow.html).
 
 
+
+
 ## Blogposts
 
 (2021) {{< link "Disclosing Shamir’s Secret Sharing vulnerabilities and announcing ZKDocs" "https://blog.trailofbits.com/2021/12/21/disclosing-shamirs-secret-sharing-vulnerabilities-and-announcing-zkdocs/" >}}.
