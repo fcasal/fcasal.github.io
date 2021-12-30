@@ -5,6 +5,7 @@ $avatar-size: {{ .Param "style.avatarSize" | default "90px;" }};
 // Colors
 $black: {{ .Param "style.colorBlack" | default "#222222" }};
 $red: {{ .Param "style.colorRed" | default "#dc3545" }};
+$background: {{ .Param "style.colorBackground" | default "#FFFFFF" }};
 
 // Font
 $font-family: {{ .Param "style.fontFamily" | default "Inconsolata" }};
@@ -12,6 +13,7 @@ $font-family: {{ .Param "style.fontFamily" | default "Inconsolata" }};
 // Margins
 $y-small: 0.6rem;
 $y-medium: 1.0rem;
+
 
 // Placeholders
 %link-default {
@@ -48,6 +50,11 @@ $y-medium: 1.0rem;
     font-family: $font-family;
     line-height: 1.2;
 }
+
+body {
+    background-color: $background;
+}
+
 .container {
     max-width: $max-width;
 }
@@ -84,7 +91,7 @@ $y-medium: 1.0rem;
     .avatar > img {
         border-radius: 30%;
         float: right;
-        margin: -88px 0 0 -116px;
+        margin: -90px 0 0 -110px;
         transform: scale(0.4);
     }
     ol {

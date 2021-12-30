@@ -14,13 +14,13 @@ I have a PhD in Information Security from [IST](https://tecnico.ulisboa.pt/), Un
 
 ## Interests
 
-I interested in cryptography, vulnerability research, logic, automated reasoning and type theory.
+I am interested in cryptography, vulnerability research, logic, automated reasoning and type theory.
 
 I have played CTF's since 2014 with [STT](https://sectt.github.io/).
 
 
 ## Vulnerability Research
- - I participated in the [EU-FOSSA](https://joinup.ec.europa.eu/collection/eu-fossa-2) program and audited the ssh PuTTY source code for one month. The highest severity vulnerabilities were:
+ - I participated in the [EU-FOSSA](https://joinup.ec.europa.eu/collection/eu-fossa-2) program and audited {{< link "PuTTY" "https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html" >}}, an SSH client. I found a critical vulnerability which allowed to MITM SSH sessions, and an out-of-bounds write during the RSA key exchange:
      - **DSA signature bypass allows to MITM SSH sessions**: More details [here](https://www.chiark.greenend.org.uk/~sgtatham/putty/wishlist/vuln-dss-verify.html).
      - [CVE-2019-9894](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2019-9894): Integer overflow to OOB write during RSA key exchange. More details [here](https://www.chiark.greenend.org.uk/~sgtatham/putty/wishlist/vuln-rsa-kex-integer-overflow.html).
 
@@ -36,3 +36,9 @@ I have played CTF's since 2014 with [STT](https://sectt.github.io/).
 ## Publications
 
 {{< references >}}
+
+## Theses
+
+- **[Combining Satisfiability Procedures and Probabilistic Satisfiability](/papers/phd_thesis.pdf)**, PhD in Information Security, 2018. Advised by [João Rasga](https://scholar.google.com/citations?user=teFGWr4AAAAJ&hl=en) @ IST, Universidade de Lisboa
+- **[On Nelson-Oppen Techniques](papers/13-C-MScThesis.pdf)**, MSc in Mathematics and Applications, 2013. Advised by [João Rasga](https://scholar.google.com/citations?user=teFGWr4AAAAJ&hl=en) @ IST, Universidade de Lisboa.
+- **[Gröbner Basis and Applications](/papers/bsc_thesis.pdf)**, BSc in Applied Mathematics and Computation, 2010. (in portuguese) Advised by Margarida Mendes Lopes @ IST.

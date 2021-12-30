@@ -12,7 +12,7 @@ theme = "researcher"
   favicon = "favicon.ico"  # path to a .ico to use as favicon
   logo = ""  # url or path to a logo to put in the header
   [params.footer]
-    text = "By Filipe Casal"
+    text = "Filipe Casal"
     url = "https://github.com/fcasal"
   [params.style]  # appearance options (can be omitted)
     fontFamily = "Inconsolata"
@@ -20,11 +20,22 @@ theme = "researcher"
     avatarSize = "90px"
     colorBlack = "#222222"
     # colorRed = "#dc3545"
-    colorRed = "#006d5b"
+    # colorRed = "#006d5b"
+    colorRed = "#316B83"
+    colorBackground = "#fffffd"
   [[params.socialIcons]]
     icon = "fab fa-twitter"
     title = "Twitter"
     url = "https://twitter.com/filipe_casal"
+  [[params.socialIcons]]
+    icon = "fab fa-github"
+    title = "Github"
+    url = "https://github.com/fcasal"
+  [[params.socialIcons]]
+    icon = "fas fa-book"
+    title = "Google Scholar"
+    url = "https://scholar.google.com/citations?user=K2HgmcsAAAAJ&hl=en&oi=ao"
+
 
 [permalinks]
   "/" = "/:filename"
